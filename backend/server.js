@@ -11,13 +11,16 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+// app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/images', express.static('backend/public/images'));
 
 app.use('/api/goals',require('./routes/goalRoutes'))
 app.use('/api/users',require('./routes/userRoutes'))
+app.use('/api/admin',require('./routes/adminRoutes'))
 
 
 app.use(errorHandler)
 
 
 
-app.listen(port,() => console.log(`server started at port ${port}`))
+app.listen(port,'::',() => console.log(`server started at port ${port}`))

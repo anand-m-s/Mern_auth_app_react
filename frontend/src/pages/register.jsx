@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
-import {FaUser} from 'react-icons/fa'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import Spinner from '../components/spinner'
+import {register,reset} from '../features/auth/authSlice'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
 
-
-function register() {
+function Register() {
 
   const [formData, setFormData] = useState({
     name: '',
@@ -16,23 +19,51 @@ function register() {
   })
 
   const { name, email, password, password2 } = formData
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  
+  const {user,isLoading,isError,isSuccess,message} = useSelector((state)=>state.auth)
+
+  useEffect(()=>{
+    if(isError){
+      toast.error(message)
+    }
+    if(isSuccess || user){
+      navigate('/')
+    }
+    dispatch(reset())
+  },[user,isError,isSuccess,message,navigate,dispatch])
+
   const onChange = (e) => {
-    setFormData((prevState)=>({
+    setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]:e.target.value,
+      [e.target.name]: e.target.value,
     }))
-   }
+  }
 
 
-  const onSubmit = (e)=>{
+  const onSubmit = (e) => {
     e.preventDefault()
+    if(password !== password2){
+      toast.error('Password do not match')
+    }else{
+      const userData = {
+        name,email,password
+      }
+      dispatch(register(userData))
+    }
+  }
+
+  if(isLoading){
+    return <Spinner/>
   }
 
   return (
     <>
       <section className='heading'>
         <h1>
-         Register
+          Register
         </h1>
         <p>Please create an account</p>
       </section>
@@ -77,7 +108,7 @@ function register() {
             placeholder='Enter your Password'
             onChange={onChange}
           />
-           <TextField
+          <TextField
             id="Password2"
             type='password'
             label="Confirm Password"
@@ -87,19 +118,18 @@ function register() {
             placeholder='Re enter Your Password'
             onChange={onChange}
           />
-        </Box>
-          <div className='mt-4'>
+        <div className='mt-4'>
           <Button variant="contained"
-           color='success'
+            color='success'
             type='submit'
             size='large'
-            >Register
-            </Button>
-          </div>
+          >Register
+          </Button>
+        </div>
+        </Box>
 
       </section>
     </>
   )
 }
-
-export default register
+export default Register

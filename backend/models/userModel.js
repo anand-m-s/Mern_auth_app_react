@@ -7,12 +7,17 @@ const userSchema = mongoose.Schema({
     },
     email:{
         type: String,
-        required : [true,'Please add an email']
+        required : [true,'Please add an email'],
+        unique : true
     },
     password:{
         type: String,
         required : [true,'Please add a password']
     },
+    avatar:{
+        type: String,
+        default: "profile.png"
+      },
    
 },{
     timestamps:true

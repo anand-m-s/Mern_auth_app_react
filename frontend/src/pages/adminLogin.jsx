@@ -6,10 +6,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Spinner from '../components/spinner'
-import { login, reset } from '../features/auth/authSlice'
+import { adminLogin, reset} from '../features/admin/adminSlice'
 
-
-function Login() {
+function AdminLogin() {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -17,15 +16,14 @@ function Login() {
     const { email, password} = formData
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
-
+    const {admin,isLoading,isError,isSuccess,message} = useSelector((state)=>state.admins)
 
     useEffect(()=>{
         if(isError){
           toast.error(message)
         }
-        if(isSuccess || user){
-          navigate('/')
+        if(isSuccess || admin){
+          navigate('/admin/dashboard')
         }
         dispatch(reset())
       },[isError,isSuccess,message,navigate,dispatch])
@@ -40,10 +38,10 @@ function Login() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        const userData = {
+        const adminData = {
             email,password
         }
-        dispatch(login(userData))
+        dispatch(adminLogin(adminData))
     }
     if(isLoading){
         return <Spinner/>
@@ -53,9 +51,9 @@ function Login() {
         <>
             <section className='heading'>
                 <h1>
-                    Login
+                Admin Login
                 </h1>
-                <p>Welcome to your Account</p>
+               
             </section>
 
             <section className='form'>
@@ -105,4 +103,4 @@ function Login() {
     )
 }
 
-export default Login
+export default AdminLogin

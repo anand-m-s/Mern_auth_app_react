@@ -13,6 +13,8 @@
 body {
   font-family: 'Poppins', sans-serif;
   height: 100vh;
+  /* margin: 0;
+  padding: 0; */
 }
 
 a {
@@ -94,12 +96,13 @@ h3 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  padding-bottom: 5rem;
 }
 
 .goal {
   background-color: #f4f4f4;
   margin: 10px 0;
-  padding: 20px 0 10px;
+  padding: 10px 0 5px;
   position: relative;
 }
 
@@ -217,3 +220,4 @@ h3 {
     font-size: 1.5rem;
   }
 }
+
