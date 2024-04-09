@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Spinner from '../components/spinner'
-import {register,reset} from '../features/auth/authSlice'
+import { register, reset } from '../features/auth/authSlice'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -22,18 +22,18 @@ function Register() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  
-  const {user,isLoading,isError,isSuccess,message} = useSelector((state)=>state.auth)
 
-  useEffect(()=>{
-    if(isError){
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    if (isError) {
       toast.error(message)
     }
-    if(isSuccess || user){
+    if (isSuccess || user) {
       navigate('/')
     }
     dispatch(reset())
-  },[user,isError,isSuccess,message,navigate,dispatch])
+  }, [user, isError, isSuccess, message, navigate, dispatch])
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -45,18 +45,26 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    if(password !== password2){
+    if (password !== password2) {
       toast.error('Password do not match')
-    }else{
+    } else if (!name || !email || !password || !password2) {
+      toast.error("All Fields mustbe filled");
+    }
+    else if (password.length < 8) {
+      toast.error('Password must be 8 char')
+    } else if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+      toast.error("Please enter a valid email address!");
+    }
+    else {
       const userData = {
-        name,email,password
+        name, email, password
       }
       dispatch(register(userData))
     }
   }
 
-  if(isLoading){
-    return <Spinner/>
+  if (isLoading) {
+    return <Spinner />
   }
 
   return (
@@ -118,14 +126,14 @@ function Register() {
             placeholder='Re enter Your Password'
             onChange={onChange}
           />
-        <div className='mt-4'>
-          <Button variant="contained"
-            color='success'
-            type='submit'
-            size='large'
-          >Register
-          </Button>
-        </div>
+          <div className='mt-4'>
+            <Button variant="contained"
+              color='success'
+              type='submit'
+              size='large'
+            >Register
+            </Button>
+          </div>
         </Box>
 
       </section>

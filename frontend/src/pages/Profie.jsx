@@ -23,7 +23,7 @@ function Profile() {
     }
     if (!user) {
       navigate('/login')
-      return;
+    
     }
     return () => {
       dispatch(reset())
@@ -43,8 +43,8 @@ function Profile() {
           style={{ width: '100px', height: '100px' }}
         />
       </div>
-      <h2>{user.name}</h2>
-      <h2>{user.email}</h2>
+      <h2>{user?.name}</h2>
+      <h2>{user?.email}</h2>
       {show && <EditProfile toggle={toggleShow} />}
       {!show && <Button variant="outlined"
         onClick={() => setShow(!show)}

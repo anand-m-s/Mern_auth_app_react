@@ -12,6 +12,8 @@ const { upload } = require( '../middleware/multer')
  router.get('/me',protect,getMe)
  router.route('/profile').get(protect,loadUserProfile)
  .put(protect,upload.single('file') ,updateUserProfile);
+
+ router.route('/userDetails').get(protect,loadUserProfile)
  
  
  

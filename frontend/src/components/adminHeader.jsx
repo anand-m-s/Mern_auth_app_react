@@ -4,19 +4,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { reset,adminLogout } from '../features/admin/adminSlice'
 import Button from '@mui/material/Button'
 
-
-
 function AdminHeader() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { admin } = useSelector((state) => state.admins)
-
+    
     const onLogout = () => {
         dispatch(adminLogout())
         dispatch(reset())
         // navigate('/admin')
     }
+    // const [username] = admin?.email.split('@');
     return (
         <>
         <header className='header'>
@@ -32,13 +31,12 @@ function AdminHeader() {
                         >Logout
                         </Button>
                     </li>
-                    <li>
-                        <Link to='/profile'>
-                            <FaUser />
-                            Profile
-                        </Link>
+                    {/* <li className='border rounded-md text-teal-500'>
+                        <p className='p-1'>
+                        {username}
+                        </p>
+                        </li> */}
 
-                    </li>
                 </ul>}
         </header >
         </>

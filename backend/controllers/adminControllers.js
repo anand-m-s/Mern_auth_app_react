@@ -29,8 +29,8 @@ const adminLogin = asyncHandler(async (req, res) => {
     }
 })
 
-const getUserData = asyncHandler(async(req,res)=>{
-    const user = await User.find({})
+const getUserData = asyncHandler(async(req,res)=>{    
+    const user = await User.find({})   
     if(user){
         res.status(200).json(user)
     }else{
@@ -39,6 +39,35 @@ const getUserData = asyncHandler(async(req,res)=>{
     }
 })
 
+const handleBlockAndUnblock = asyncHandler(async(req,res)=>{
+    const _id = req.query._id;
+    const user = await User.findById(_id)
+    if(user){
+        user.isBlocked = !user.isBlocked
+        const updatedUser = await user.save()
+        // const allUsers = await User.find()
+        res.status(200).json(updatedUser)
+    }else{
+        res.status(401)
+        throw new Error('User not found')
+    }
+})
+
+const updateUser = asyncHandler(async (req, res) => {
+      const userId = req.body.userId;
+      const { body } = req;
+      const updatedUser = await User.findByIdAndUpdate(userId, body, { new: true });
+      const users = await User.find()
+      if (!users) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      } else {
+        res.status(200).json({ users });
+      }
+  });
+
+
 module.exports = {
-    registerAdmin,adminLogin,getUserData
+    registerAdmin,adminLogin,getUserData,
+    handleBlockAndUnblock,updateUser
 }

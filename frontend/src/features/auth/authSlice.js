@@ -10,7 +10,9 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: '',
+    count:0
 }
+
 
 //Register User
 export const register = createAsyncThunk('auth/register', async (user, thunkAPI) => {
@@ -23,9 +25,9 @@ export const register = createAsyncThunk('auth/register', async (user, thunkAPI)
             error.message ||
             error.toString()
         return thunkAPI.rejectWithValue(message)
-
     }
 })
+
 //Login User
 export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
@@ -37,7 +39,6 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
             error.message ||
             error.toString()
         return thunkAPI.rejectWithValue(message)
-
     }
 })
 
@@ -69,6 +70,8 @@ export const updateUser = createAsyncThunk('auth/profile', async (userData, thun
     }
 })
 
+
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -79,6 +82,12 @@ export const authSlice = createSlice({
             state.isSuccess = false
             state.message = ''
         },
+        increment: (state)=>{
+            state.count+=1
+        },
+        decrement:(state)=>{
+            state.count-=1
+        }
     
 
     },
@@ -132,9 +141,10 @@ export const authSlice = createSlice({
                 state.user = null
                
             })
+           
 
     }
 })
 
-export const { reset} = authSlice.actions
+export const { reset,increment,decrement} = authSlice.actions
 export default authSlice.reducer
